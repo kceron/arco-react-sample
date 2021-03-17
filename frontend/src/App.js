@@ -3,6 +3,8 @@
     import React, { Component } from "react";
     import Modal from "./components/Modal";
     import axios from "axios";
+    import './App.css'
+
 
     class App extends Component {
       constructor(props) {
@@ -20,10 +22,27 @@
       componentDidMount() {
         this.refreshList();
       }
+
+      // edit date
+      convertDate = (date) => {
+        const newDate = new Date(date)
+        return newDate.toLocaleString('en-US', {timeZone: 'EST'})
+      }
+
+
+      isDue = (date) => {
+        let currentDate = new Date()
+        let dueDate = new Date(date)
+
+        return currentDate > dueDate
+      }
+
       refreshList = () => {
         axios
           .get("http://localhost:8000/api/todos/")
-          .then(res => this.setState({ todoList: res.data }))
+          .then(res => {
+            console.log(res.data)
+            this.setState({ todoList: res.data })})
           .catch(err => console.log(err));
       };
       displayCompleted = status => {
@@ -58,8 +77,9 @@
         return newItems.map(item => (
           <li
             key={item.id}
-            className="list-group-item d-flex justify-content-between align-items-center"
+            className={`list-group-item ${this.isDue(item.due_date) ? 'is-due' : ''}`}
           >
+            <div>
             <span
               className={`todo-title mr-2 ${
                 this.state.viewCompleted ? "completed-todo" : ""
@@ -83,6 +103,11 @@
                 Delete{" "}
               </button>
             </span>
+            </div>
+            <div className="item__information">
+              <h5 className="item__information__line">Due date: <span>{this.convertDate(item.due_date)}</span></h5>
+              <h5 className="item__information__line">Priority: <span>{item.priority}</span></h5>
+            </div>
           </li>
         ));
       };
@@ -118,7 +143,7 @@
           <main className="content">
             <h1 className="text-white text-uppercase text-center my-4">Todo app</h1>
             <div className="row ">
-              <div className="col-md-6 col-sm-10 mx-auto p-0">
+              <div className="app-card">
                 <div className="card p-3">
                   <div className="">
                     <button onClick={this.createItem} className="btn btn-primary">

@@ -36,3 +36,38 @@
     transform: rotate(360deg);
   }
 }
+
+h5{
+  margin: 0px;
+}
+
+.list-group-item div{
+  width:100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.list-group-item div:last-child{
+  margin-top:15px;
+  padding:10px;
+  background-color: rgb(226, 226, 226);
+  border-radius: 3px;
+}
+
+.item__information h5{
+  font-size: 1rem;
+  font-weight: 700;
+} 
+
+.item__information h5 > span{
+  font-weight: 400;
+}
+
+.app-card{
+  width:100%;
+}
+
+.is-due{
+  background-color: rgb(253, 226, 226);
+}
